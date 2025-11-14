@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>لوحة تحكم الأدمن</title>
+    <style>
+        body { font-family: Arial; direction: rtl; padding: 20px; background: #f4f4f4; }
+        .box { background:white; padding:20px; width:400px; margin:auto; border-radius:10px; }
+        input, button { width:100%; padding:10px; margin:8px 0; }
+        button { background:#1565c0; color:white; border:none; cursor:pointer; }
+		
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url('po.png'); /* حط هنا اسم الصورة */
+        background-size: cover;          /* تخلي الصورة تغطي الشاشة كلها */
+        background-position: center;     /* تحطها في منتصف الصفحة */
+        background-repeat: no-repeat;    /* تمنع تكرار الصورة */
+        font-family: Arial, sans-serif;  /* اختيار خط لطيف */
+    }
+
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>إضافة بيانات المتهم</h2>
+
+    <input type="text" id="num" placeholder="رقم المتهم">
+    <input type="text" id="name" placeholder="اسم المتهم">
+    <input type="text" id="caseNum" placeholder="رقم المحضر">
+
+    <button onclick="saveAccused()">حفظ المحضر</button>
+</div>
+
+<script>
+function saveAccused() {
+    let num = document.getElementById("num").value;
+    let name = document.getElementById("name").value;
+    let caseNum = document.getElementById("caseNum").value;
+
+    if (!num || !name || !caseNum) {
+        alert("من فضلك اكمل البيانات");
+        return;
+    }
+
+    // لو المتهم موجود قبل كده، هجيب داته
+    let existing = localStorage.getItem("accused_" + num);
+
+    let data;
+
+    if (existing) {
+        data = JSON.parse(existing);
+    } else {
+        data = {
+            name: name,
+            cases: [] // هنا القائمة اللي هيتسجل فيها كل المحاضر
+        };
+    }
+
+    data.cases.push(caseNum);  // إضافة محضر جديد
+
+    localStorage.setItem("accused_" + num, JSON.stringify(data));
+
+    alert("✔️ تم إضافة المحضر بنجاح");
+}
+</script>
+
+</body>
+</html>
