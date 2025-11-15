@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>استعلام عن المحاضر</title>
+    <style>
+
+
+        body { font-family: Arial; direction: rtl; padding:20px; background:#f4f4f4; }
+        .box { background:white; padding:20px; width:400px; margin:auto; border-radius:10px; }
+        input, button { width:100%; padding:10px; margin:8px 0; }
+        button { background:#2e7d32; color:white; border:none; cursor:pointer; }
+        #result { background:#fff9c4; padding:15px; border-radius:10px; display:none; }
+    </style>
+	<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background-image: url("img.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h2>الاستعلام برقم المتهم</h2>
+
+    <input type="text" id="searchNum" placeholder="ادخل رقم المتهم">
+    <button onclick="search()">بحث</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function search() {
+    let num = document.getElementById("searchNum").value;
+    let data = localStorage.getItem("accused_" + num);
+
+    if (!data) {
+        alert("❌ لا يوجد بيانات لهذا الرقم");
+        return;
+    }
+
+    let accused = JSON.parse(data);
+
+    let casesList = "";
+    accused.cases.forEach((c, i) => {
+        casesList += (i+1) + " - " + c + "<br>";
+    });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("result").innerHTML =
+        "<b>اسم المتهم:</b> " + accused.name + "<br><br>" +
+        "<b>جميع المحاضر المسجّلة عليه:</b><br>" + casesList;
+}
+</script>
+
+</body>
+</html>
